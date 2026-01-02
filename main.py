@@ -2,6 +2,7 @@ import json
 import os
 import requests
 from pathlib import Path
+from parsejson import load_json
 
 ### Config ###
 JSON_PATH = Path("memories_history.json")
@@ -35,15 +36,9 @@ def download_media(item):
     print("HTTP status:", response.status_code)
     output_path.write_bytes(response.content)
 
-
-
 def main():
-    file = JSON_PATH.open("r", encoding="utf-8")
-    data = json.load(file)
-    file.close()
-    items = data[ITEMS_KEY]
-    count = 0
+    items = load_json(JSON_PATH, ITEMS_KEY)
     for item in items:
         download_media(item)
-        count += 1
+
 main()
