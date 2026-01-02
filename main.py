@@ -12,12 +12,12 @@ MEDIA_URL_KEY = "Media Download Url"
 TIMESTAMP_KEY = "Date"
 MEDIA_TYPE_KEY = "Media Type"
 
-def download_media(item):
+def download_media(item, index):
     media_url = item.get(MEDIA_URL_KEY)
     timestamp = item.get(TIMESTAMP_KEY)
     media_type = item.get(MEDIA_TYPE_KEY)
     safe_timestamp = timestamp.replace(":", "-").replace(" ", "_")
-
+    
     if media_type == "Image":
         type = "image"
         ext = ".jpg"
@@ -28,7 +28,7 @@ def download_media(item):
         type = "fixme"
         ext = ".fixme"
 
-    filename = f"{safe_timestamp}_{type}{ext}"
+    filename = f"{safe_timestamp}_{type}_{index}{ext}"
     output_path = DOWNLOAD_FOLDER / filename
 
     print(f"Downloading media from to {output_path}")
@@ -38,7 +38,11 @@ def download_media(item):
 
 def main():
     items = load_json(JSON_PATH, ITEMS_KEY)
+    index = 1
+    success_count = 0
     for item in items:
-        download_media(item)
-
+        ok = download_media(item, index)
+        if ok:
+            success_count += 1
+        index += 1
 main()
