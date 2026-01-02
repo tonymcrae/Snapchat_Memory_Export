@@ -1,4 +1,6 @@
 import json
+import os
+import requests
 from pathlib import Path
 
 #Define variables
