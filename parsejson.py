@@ -16,15 +16,19 @@ def download_media(item, index):
     media_url = item.get(MEDIA_URL_KEY)
     timestamp = item.get(TIMESTAMP_KEY)
     media_type = item.get(MEDIA_TYPE_KEY)
+    safe_timestamp = timestamp.replace(":", "-").replace(" ", "_")
 
     if media_type == "Image":
+        type = "image"
         ext = ".jpg"
     elif media_type == "Video":
+        type = "video"
         ext = ".mp4"
     else:
+        type = "fixme"
         ext = ".fixme"
 
-    filename = f"{index}{ext}"
+    filename = f"{safe_timestamp}_{type}{ext}"
     output_path = DOWNLOAD_FOLDER / filename
 
     print(f"Downloading media from to {output_path}")
